@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var fs = require('fs');
 var https = require('https');
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var uploadRouter = require('./routes/upload');
 
 var app = express();
 const PORT = 3000;
@@ -27,7 +27,8 @@ app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/upload', uploadRouter);
+app.use('/static', express.static('uploads'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
