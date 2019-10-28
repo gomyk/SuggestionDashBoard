@@ -3,12 +3,19 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const bodyParser = require('body-parser');
-
+var bodyParser = require('body-parser');
+var fs = require('fs');
+var https = require('https');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+const PORT = 3000;
+//ssl key define
+const optionsForHTTPS = {
+  cert : fs.readFileSync('/etc/letsencrypt/live/suggestionlogging.koreacentral.cloudapp.azure.com/fullchain.pem'),
+  key : fs.readFileSync('/etc/letsencrypt/live/suggestionlogging.koreacentral.cloudapp.azure.com/privkey.pem')
+}
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -36,6 +43,10 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+https.createServer(optionsForHTTPS, app).listen(PORT, function(){
+  console.log('HTTPS Server Start PORT:' + PORT);
 });
 
 module.exports = app;

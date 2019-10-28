@@ -13,7 +13,7 @@ router.get('/', function(req, res, next) {
   console.log("test_log");
   //Todo : req.body.logging_data_table is null
   var response = process(req.body.logging_data_table);
-  res.render('index', { title: response });
+  res.send(200,'Working good');
 });
 
 router.post('/', function(req, res, next) {
