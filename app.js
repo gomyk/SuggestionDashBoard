@@ -8,8 +8,12 @@ var fs = require('fs');
 var https = require('https');
 var indexRouter = require('./routes/index');
 var uploadRouter = require('./routes/upload');
+var serveIndex = require('serve-index');
+var serveStatic = require('serve-static');
 
 var app = express();
+
+
 const PORT = 3000;
 //ssl key define
 const optionsForHTTPS = {
@@ -22,13 +26,14 @@ app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', serveIndex('uploads',{'icon':true}));
+app.use('/uploads', serveStatic('uploads'));
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
+
 app.use('/', indexRouter);
 app.use('/upload', uploadRouter);
-app.use('/static', express.static('uploads'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

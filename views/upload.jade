@@ -4,5 +4,13 @@ html
     meta(charset='utf-8')
   body
     form(action='upload' method='post' enctype="multipart/form-data")
-      input(type='file' name='userfile')
+      | Folder name
+      input(type='text' name='deviceId')
+      br
+      | File name
+      input(type='text' name='timestamp')
+      br
+      | Attach file to test
+      input(type='file' name='file')
+      br
       input(type='submit')
