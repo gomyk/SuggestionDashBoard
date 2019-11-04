@@ -15,7 +15,7 @@ var storage = multer.diskStorage({
     cb(null, 'uploads/');
   },
   filename: function (req, file, cb){
-    cb(null, req.body.deviceId+"/"+req.body.timestamp+'.ttl');
+    cb(null, req.body.deviceId+"/"+req.body.timestamp+'_'+req.body.deviceId+'.ttl');
   }
 })
 var upload = multer({
