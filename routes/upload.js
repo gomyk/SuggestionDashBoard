@@ -16,7 +16,7 @@ var storage = multer.diskStorage({
   },
   filename: function (req, file, cb){
     if(req.body.filename == undefined || req.body.filename == null) {
-	req.body.filename =  'deprecated_client';
+	req.body.filename =  req.body.timestamp+'_'+req.body.deviceId+'.ttl';
     }
     cb(null, req.body.deviceId+"/"+req.body.filename);
   }
