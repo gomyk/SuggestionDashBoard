@@ -15,7 +15,10 @@ var storage = multer.diskStorage({
     cb(null, 'uploads/');
   },
   filename: function (req, file, cb){
-    cb(null, req.body.deviceId+"/"+req.body.timestamp+'_'+req.body.deviceId+'.ttl');
+    if(req.body.filename == undefined || req.body.filename == null) {
+	req.body.filename =  'deprecated_client';
+    }
+    cb(null, req.body.deviceId+"/"+req.body.filename);
   }
 })
 var upload = multer({
