@@ -18,7 +18,7 @@ var storage = multer.diskStorage({
     if(req.body.filename == undefined || req.body.filename == null) {
 	     req.body.filename =  req.body.timestamp+'_'+req.body.deviceId+'.ttl';
     }
-    req.body.filesize = req.file.size;
+    req.body.filesize = file.size;
     cb(null, req.body.deviceId+"/"+req.body.filename);
   }
 })
