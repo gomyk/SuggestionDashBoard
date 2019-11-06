@@ -19,7 +19,6 @@ var storage = multer.diskStorage({
     if(req.body.filename == undefined || req.body.filename == null) {
 	     req.body.filename =  req.body.timestamp+'_'+req.body.deviceId+'.ttl';
     }
-    req.body.filesize = file.size;
     cb(null, req.body.deviceId+"/"+req.body.filename);
   }
 })
@@ -44,7 +43,7 @@ router.post('/', function(req, res, next) {
         "deviceId":req.body.deviceId,
         "timestamp":req.body.timestamp,
         "filename":req.body.filename,
-        "filesize":req.body.filesize
+        "filesize":res.file.size
       };
       request({
         url: 'http://localhost:3003/pkgfile',
