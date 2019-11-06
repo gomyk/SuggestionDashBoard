@@ -16,8 +16,9 @@ var storage = multer.diskStorage({
   },
   filename: function (req, file, cb){
     if(req.body.filename == undefined || req.body.filename == null) {
-	req.body.filename =  req.body.timestamp+'_'+req.body.deviceId+'.ttl';
+	     req.body.filename =  req.body.timestamp+'_'+req.body.deviceId+'.ttl';
     }
+    req.body.filesize = req.file.size;
     cb(null, req.body.deviceId+"/"+req.body.filename);
   }
 })
@@ -38,6 +39,23 @@ router.post('/', function(req, res, next) {
       console.log(err);
       res.send(500,'somthing wrong');
     } else{
+      var data = {
+        "deviceId":req.body.deviceId,
+        "timestamp":req.body.timestamp,
+        "filename":req.body.filename,
+        "filesize":req.body.filesize
+      };
+      request({
+        url: 'http://localhost:3003/pkgfile',
+        method : 'POST',
+        json : data
+      },function (err,res,body) {
+          if(err){
+            console.log(500);
+          } else{
+            console.log(200);
+          }
+      });
       if(savePkgFileToDB(req.body) != null){
         res.send(200,'Upload_PKG');
       } else {
