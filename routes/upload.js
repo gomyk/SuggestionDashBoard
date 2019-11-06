@@ -3,6 +3,7 @@ var router = express.Router();
 var multer = require('multer');
 var fs = require('fs');
 var pkg_file = require("../models/pkg_file");
+var request = require('request');
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb){
