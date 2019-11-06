@@ -43,8 +43,9 @@ router.post('/', function(req, res, next) {
         "deviceId":req.body.deviceId,
         "timestamp":req.body.timestamp,
         "filename":req.body.filename,
-        "filesize":res.file.size
+        "filesize":req.file.size
       };
+
       request({
         url: 'http://localhost:3003/pkgfile',
         method : 'POST',
