@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var multer = require('multer');
 var fs = require('fs');
-var pkg_file = require("../models/pkg_file");
 var request = require('request');
 
 var storage = multer.diskStorage({
@@ -57,30 +56,10 @@ router.post('/', function(req, res, next) {
             console.log(200);
           }
       });
-      if(savePkgFileToDB(req.body) != null){
-        res.send(200,'Upload_PKG');
-      } else {
-        res.send(500,'somthing wrong');
-      }
+      res.send(200);
     }
   });
 });
 
-async function savePkgFileToDB(data) {
-  if(data == undefined || data == null){
-    return null;
-  }
-  var response = {};
-  await pkg_file.create(data, function (err, res) {
-    if(err) {
-      response = {"error" : true, "message" : "Error adding data"};
-      console.log("error : "+ res);
-    } else {
-      response = {"error" : false, "message" : "Data added"};
-      console.log("success");
-    }
-  });
-  return response;
-}
 
 module.exports = router;

@@ -17,8 +17,8 @@ var app = express();
 const PORT = 3000;
 //ssl key define
 const optionsForHTTPS = {
-  cert : fs.readFileSync('/etc/letsencrypt/live/suggestionlogging.koreacentral.cloudapp.azure.com/fullchain.pem'),
-  key : fs.readFileSync('/etc/letsencrypt/live/suggestionlogging.koreacentral.cloudapp.azure.com/privkey.pem')
+  cert : fs.readFileSync('/etc/letsencrypt/live/dockertest.koreacentral.cloudapp.azure.com/fullchain.pem'),
+  key : fs.readFileSync('/etc/letsencrypt/live/dockertest.koreacentral.cloudapp.azure.com/privkey.pem')
 }
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -51,7 +51,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-https.createServer(optionsForHTTPS, app).listen(PORT, function(){
+https.createServer(optionsForHTTPS, app).listen(PORT, '0.0.0.0'function(){
   console.log('HTTPS Server Start PORT:' + PORT);
 });
 
