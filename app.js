@@ -10,16 +10,11 @@ var indexRouter = require('./routes/index');
 var uploadRouter = require('./routes/upload');
 var serveIndex = require('serve-index');
 var serveStatic = require('serve-static');
+const commandLineArgs = require('command-line-args')
 
 var app = express();
-
-
 const PORT = 3000;
-//ssl key define
-const optionsForHTTPS = {
-  cert : fs.readFileSync('/etc/letsencrypt/live/dockertest.koreacentral.cloudapp.azure.com/fullchain.pem'),
-  key : fs.readFileSync('/etc/letsencrypt/live/dockertest.koreacentral.cloudapp.azure.com/privkey.pem')
-}
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -51,7 +46,23 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-https.createServer(optionsForHTTPS, app).listen(PORT, '0.0.0.0'function(){
+//ssl key define
+function createHttpOptions(url) {
+  return {
+    cert : fs.readFileSync('/etc/letsencrypt/live/' + url + '/fullchain.pem'),
+    key : fs.readFileSync('/etc/letsencrypt/live/' + url + '/privkey.pem')
+  };
+}
+
+const optionDefinitions = [
+  { name: 'url', alias: 'v', type: String },
+  { name: 'src', type: String, multiple: true, defaultOption: true}
+]
+
+const options = commandLineArgs(optionDefinitions)
+console.log("url : " + options.url);
+
+https.createServer(createHttpOptions(options.url), app).listen(PORT, '0.0.0.0', function(){
   console.log('HTTPS Server Start PORT:' + PORT);
 });
 
