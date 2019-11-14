@@ -11,15 +11,14 @@ var uploadRouter = require('./routes/upload');
 var serveIndex = require('serve-index');
 var serveStatic = require('serve-static');
 
-var app = express();
-
-
-const PORT = 3000;
-//ssl key define
-const optionsForHTTPS = {
-  cert : fs.readFileSync('/etc/letsencrypt/live/dockertest.koreacentral.cloudapp.azure.com/fullchain.pem'),
-  key : fs.readFileSync('/etc/letsencrypt/live/dockertest.koreacentral.cloudapp.azure.com/privkey.pem')
+if (process.argv.length < 3) {
+  console.log("Usage: npm start [url]\n");
+  process.exit();
 }
+
+var app = express();
+const PORT = 3000;
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -51,7 +50,16 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-https.createServer(optionsForHTTPS, app).listen(PORT, '0.0.0.0'function(){
+//ssl key define
+function createHttpOptions() {
+  const url = process.argv[2];
+  return {
+    cert : fs.readFileSync('/etc/letsencrypt/live/' + url + '/fullchain.pem'),
+    key : fs.readFileSync('/etc/letsencrypt/live/' + url + '/privkey.pem')
+  };
+}
+
+https.createServer(createHttpOptions(), app).listen(PORT, '0.0.0.0', function(){
   console.log('HTTPS Server Start PORT:' + PORT);
 });
 
