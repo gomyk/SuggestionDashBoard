@@ -10,7 +10,11 @@ var indexRouter = require('./routes/index');
 var uploadRouter = require('./routes/upload');
 var serveIndex = require('serve-index');
 var serveStatic = require('serve-static');
-const commandLineArgs = require('command-line-args')
+
+if (process.argv.length < 3) {
+  console.log("Usage: npm start [url]\n");
+  process.exit();
+}
 
 var app = express();
 const PORT = 3000;
@@ -47,22 +51,15 @@ app.use(function(err, req, res, next) {
 });
 
 //ssl key define
-function createHttpOptions(url) {
+function createHttpOptions() {
+  const url = process.argv[2];
   return {
     cert : fs.readFileSync('/etc/letsencrypt/live/' + url + '/fullchain.pem'),
     key : fs.readFileSync('/etc/letsencrypt/live/' + url + '/privkey.pem')
   };
 }
 
-const optionDefinitions = [
-  { name: 'url', alias: 'v', type: String },
-  { name: 'src', type: String, multiple: true, defaultOption: true}
-]
-
-const options = commandLineArgs(optionDefinitions)
-console.log("url : " + options.url);
-
-https.createServer(createHttpOptions(options.url), app).listen(PORT, '0.0.0.0', function(){
+https.createServer(createHttpOptions(), app).listen(PORT, '0.0.0.0', function(){
   console.log('HTTPS Server Start PORT:' + PORT);
 });
 
