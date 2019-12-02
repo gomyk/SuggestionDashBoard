@@ -3,12 +3,15 @@ html
     script(type= 'text/javascript', src = '/lib/jquery.js')
     link(rel='stylesheet', href='jjsonviewer.css')
     script(src='jjsonvier.js')
-    
+    p Download original output json
+    a(href= #{link}) #{link}
   body
+    p
+    p
     #jjson.jjson
     script(type='text/javascript').
       $(document).ready(function() {
-        var json = $.getJSON("/uploads/test/output.json", function(data){
+        var json = $.getJSON($_GET['path'], function(data){
             console.log(data);
             $("#jjson").jJsonViewer(data);    
         });

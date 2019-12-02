@@ -5,7 +5,10 @@ var request = require('request');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   //Render Json tree
-  res.render('index',{title:"title",json_path:req.body.path});
+  res.render('index',{
+    title:"title",
+    path:req.query.path,
+    link:req.query.link});
 });
 
 router.post('/', function(req, res, next) {
