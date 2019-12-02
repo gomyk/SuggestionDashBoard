@@ -11,7 +11,7 @@ html
     #jjson.jjson
     script(type='text/javascript').
       $(document).ready(function() {
-        var json = $.getJSON("<%=path%>", function(data){
+        var json = $.getJSON("#{path}", function(data){
             console.log(data);
             $("#jjson").jJsonViewer(data);    
         });
