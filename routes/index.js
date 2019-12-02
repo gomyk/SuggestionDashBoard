@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var request = require('request');
+var fs = require('fs');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -21,7 +22,9 @@ router.post('/', function(req, res, next) {
   } else{
     if(parsed_json.bixby_client_version == undefined
       || parsed_json.bixby_client_version == null) {
-      res.send(500,'Parse data : Cannot find client version');
+      //json output
+      res.send(200,'Save data : Save analyzed keyword output');
+      saveJsonToFile(parsed_json);
     }
     else if(parsed_json.bixby_client_version <= '2.2.46.85') {
       res.send(500,'Parse data : Low version');
@@ -42,4 +45,12 @@ router.post('/', function(req, res, next) {
   }
 });
 
+function saveJsonToFile(jsonObject){
+  try {
+    fs.writeFileSync('/uploads/output/'+jsonObject.filename+'.json',
+    JSON.stringify(jsonObject.output));
+  } catch (err) {
+    console.error(err);
+  }
+}
 module.exports = router;
