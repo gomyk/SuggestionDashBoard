@@ -9,10 +9,14 @@ router.get('/', function(req, res, next) {
   if(req.query.path == undefined){
     res.send(500, 'Do not request without query');
   } else {
-    res.render('index',{
-      title:"title",
-      path:req.query.path,
-      link:req.query.link});
+    if(fs.existsSync(req.query.path)) {
+      res.render('index',{
+        title:"title",
+        path:req.query.path,
+        link:req.query.link});
+    } else {
+      res.render('error');
+    }
   }
 });
 
