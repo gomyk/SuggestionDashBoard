@@ -8,11 +8,12 @@ html
   body
     p
     p
-    #jjson.jjson
-    script(type='text/javascript').
-      $(document).ready(function() {
-        var json = $.getJSON("#{path}", function(data){
-            console.log(data);
-            $("#jjson").jJsonViewer(data);    
-        });
-      });
+    div(style='border: 2px solid black')
+      #jjson.jjson
+      script(type='text/javascript').
+        $(document).ready(function() {
+          var json = $.getJSON("#{path}", function(data){
+              console.log(data);
+              $("#jjson").jJsonViewer(data);    
+            });
+          });
