@@ -29,22 +29,13 @@ router.post('/', function(req, res, next) {
       //json output
       res.send(200,'Save data : Save analyzed keyword output');
       saveJsonToFile(parsed_json);
+      sendToLogServer(parsed_json, 'keyword');
     }
     else if(parsed_json.bixby_client_version <= '2.2.46.85') {
       res.send(500,'Parse data : Low version');
     } else {
       res.send(200,'Parse data : OK...try send log');
-      request({
-        url: 'http://localhost:3003/suggestion',
-        method : 'POST',
-        json : parsed_json
-      },function (err,res,body) {
-          if(err){
-            console.log("Send log : Cannot send to logstash");
-          } else{
-            console.log("Send log : OK");
-          }
-      });
+      sendToLogServer(parsed_json, 'suggestion');
     }
   }
 });
@@ -56,5 +47,19 @@ function saveJsonToFile(jsonObject){
   } catch (err) {
     console.error(err);
   }
+}
+
+function sendToLogServer(jsonObject, index){
+  request({
+    url: 'http://localhost:3003/'+index,
+    method : 'POST',
+    json : parsed_json
+  },function (err,res,body) {
+      if(err){
+        console.log("Send log : Cannot send to logstash");
+      } else{
+        console.log("Send log : OK");
+      }
+  });
 }
 module.exports = router;
