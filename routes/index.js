@@ -29,6 +29,7 @@ router.post('/', function(req, res, next) {
       //json output
       console.log('Save data : Save analyzed keyword output');
       saveJsonToFile(parsed_json);
+      res.send(200,'Save json complete');
       sendToLogServer(parsed_json, 'keyword');
     }
     else if(parsed_json.bixby_client_version <= '2.2.46.85') {
