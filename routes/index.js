@@ -27,7 +27,7 @@ router.post('/', function(req, res, next) {
     if(parsed_json.bixby_client_version == undefined
       || parsed_json.bixby_client_version == null) {
       //json output
-      res.send(200,'Save data : Save analyzed keyword output');
+      console.log('Save data : Save analyzed keyword output');
       saveJsonToFile(parsed_json);
       sendToLogServer(parsed_json, 'keyword');
     }
