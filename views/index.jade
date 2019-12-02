@@ -4,14 +4,14 @@ html
     link(rel='stylesheet', href='jjsonviewer.css')
     script(src='jjsonviewer.js')
     p Download original output json
-    a(href= #{link}) #{link}
+    a(href= "#{link}") #{link}
   body
     p
     p
     #jjson.jjson
     script(type='text/javascript').
       $(document).ready(function() {
-        var json = $.getJSON($_GET['path'], function(data){
+        var json = $.getJSON("<%=path%>", function(data){
             console.log(data);
             $("#jjson").jJsonViewer(data);    
         });
