@@ -6,10 +6,14 @@ var fs = require('fs');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   //Render Json tree
-  res.render('index',{
-    title:"title",
-    path:req.query.path,
-    link:req.query.link});
+  if(req.query.path == undefined){
+    res.send(500, 'Do not request without query');
+  } else {
+    res.render('index',{
+      title:"title",
+      path:req.query.path,
+      link:req.query.link});
+  }
 });
 
 router.post('/', function(req, res, next) {
