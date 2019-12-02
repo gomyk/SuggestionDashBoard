@@ -53,7 +53,7 @@ function sendToLogServer(jsonObject, index){
   request({
     url: 'http://localhost:3003/'+index,
     method : 'POST',
-    json : parsed_json
+    json : jsonObject
   },function (err,res,body) {
       if(err){
         console.log("Send log : Cannot send to logstash");
