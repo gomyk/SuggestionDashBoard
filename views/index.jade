@@ -1,5 +1,15 @@
-extends layout
-
-block content
-  h1= title
-  p Welcome to #{title}
+html
+  head
+    script(type= 'text/javascript', src = '/lib/jquery.js')
+    link(rel='stylesheet', href='jjsonviewer.css')
+    script(src='jjsonvier.js')
+    
+  body
+    #jjson.jjson
+    script(type='text/javascript').
+      $(document).ready(function() {
+        var json = $.getJSON("/uploads/test/output.json", function(data){
+            console.log(data);
+            $("#jjson").jJsonViewer(data);    
+        });
+      });

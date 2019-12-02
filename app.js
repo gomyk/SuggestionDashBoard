@@ -25,6 +25,7 @@ app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(cookieParser());
+app.use(express.static(__dirname + '/public'));
 app.use('/uploads', serveIndex('uploads',{'icon':true}));
 app.use('/uploads', serveStatic('uploads'));
 app.use(bodyParser.json({limit: '50mb'}));
