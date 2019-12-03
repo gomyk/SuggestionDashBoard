@@ -28,6 +28,7 @@ router.post('/', function(req, res, next) {
   var parsed_json = JSON.parse(data);
 
   if(parsed_json == null){
+    console.log('Parse data : Json parse error');
     res.send(500,'Parse data : Json parse error');
   } else{
     if(parsed_json.bixby_client_version == undefined
@@ -39,6 +40,7 @@ router.post('/', function(req, res, next) {
       sendToLogServer(parsed_json, 'keyword');
     }
     else if(parsed_json.bixby_client_version <= '2.2.46.85') {
+      console.log('Parse data : Low version');
       res.send(500,'Parse data : Low version');
     } else {
       res.send(200,'Parse data : OK...try send log');
