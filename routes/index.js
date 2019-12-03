@@ -29,7 +29,7 @@ router.post('/', function(req, res, next) {
   }
   var parsed_json = null;
   try {
-      parsed_json = JSON.parse(data);
+    parsed_json = JSON.parse(data);
   } catch (err){
     console.log(err);
   }
@@ -73,9 +73,9 @@ function sendToLogServer(jsonObject, index){
   },function (err,res,body) {
       if(err){
         console.log("Send log : Cannot send to logstash");
+        console.log(err);
       } else{
         console.log("Send log : OK");
       }
-  });
 }
 module.exports = router;
