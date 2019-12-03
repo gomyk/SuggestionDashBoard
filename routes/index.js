@@ -43,7 +43,7 @@ router.post('/', function(req, res, next) {
       //json output
       console.log('Save data : Save analyzed keyword output');
       saveJsonToFile(parsed_json);
-      res.send(200,'Save json complete');
+      //res.send(200,'Save json complete');
       if(parsed_json[0].keyword == undefined || parsed_json[0].keyword == null) {
         console.log('Save data : parsed_json is empty');
       } else {
@@ -65,7 +65,7 @@ function saveJsonToFile(jsonObject){
     fs.writeFileSync('./uploads/output/'+jsonObject.filename+'.json',
     JSON.stringify(jsonObject.output));
   } catch (err) {
-    console.error(err);
+    console.log(err);
   }
 }
 
