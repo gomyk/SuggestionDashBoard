@@ -43,8 +43,9 @@ router.post('/', function(req, res, next) {
       //json output
       console.log('Save data : Save analyzed keyword output');
       saveJsonToFile(parsed_json);
-      //res.send(200,'Save json complete');
-      if(parsed_json[0].keyword == undefined || parsed_json[0].keyword == null) {
+      res.send(200,'Save json complete');
+      console.log(parsed_json);
+      if(parsed_json.length() == 0) {
         console.log('Save data : parsed_json is empty');
       } else {
         sendToLogServer(parsed_json, 'keyword');
