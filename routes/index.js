@@ -27,7 +27,12 @@ router.post('/', function(req, res, next) {
   if(data == undefined || data == null){
     console.log("Request error : There is no logging_data_table field in body");
   }
-  var parsed_json = JSON.parse(data);
+  var parsed_json = null;
+  try {
+      parsed_json = JSON.parse(data);
+  } catch (err){
+    console.log(err);
+  }
 
   if(parsed_json == null){
     console.log('Parse data : Json parse error');
