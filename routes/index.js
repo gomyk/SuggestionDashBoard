@@ -24,7 +24,9 @@ router.get('/', function(req, res, next) {
 
 router.post('/', function(req, res, next) {
   var data = req.body.logging_data_table;
-
+  if(data == undefined || data == null){
+    console.log("Request error : There is no logging_data_table filed in body");
+  }
   var parsed_json = JSON.parse(data);
 
   if(parsed_json == null){
