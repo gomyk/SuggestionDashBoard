@@ -77,5 +77,6 @@ function sendToLogServer(jsonObject, index){
       } else{
         console.log("Send log : OK");
       }
+    });
 }
 module.exports = router;
