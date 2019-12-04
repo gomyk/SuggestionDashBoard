@@ -23,7 +23,7 @@ var storage = multer.diskStorage({
 })
 var upload = multer({
   storage: storage,
-  limits : { filedSize: '50MB' }
+  limits : { fileSize: '50MB' }
 }).single('file');
 
 router.get('/', function(req, res, next) {
