@@ -8,25 +8,26 @@ html
     script(type= 'text/javascript', src = '/lib/jquery.js')
     link(rel='stylesheet', href='jjsonviewer.css')
     script(src='jjsonviewer.js')
-    h1 Script output result
+
+    h1 Script result
+    div(sytle="background-color:lightblue" id="fixHeader" )
+      a(href='#{link}')
+        button.btn.btn-primary(type='button') Download original output json
+      ul#navtab.nav.nav-tabs
+      div(style='border: 2px solid black' id='border')
+        #list.tab-content
   body
     p
     p
-    a(href='#{link}')
-      button.btn.btn-primary(type='button') Download original output json
-    ul#navtab.nav.nav-tabs
-      li.active
-        a(href='#') Keywords
     p
-    div(style='border: 2px solid black' id='list')
       script(type='text/javascript').
         $(document).ready(function() {
           var json = $.getJSON("#{path}", function(data){
               console.log(data.output.length);
               for(var i = 0;i<data.output.length;++i){
                     var id = "keyword"+i;
-                    $('#navtab').append("<li><a href="+ "#"+id + ">"+data.output[i].keyword +"</a></li>");
-                    $('#list').append("<div id="+id+">")
+                    $('#navtab').append("<li><a data-toggle='tab' href='#"+id +"'>"+data.output[i].keyword +"</a></li>");
+                    $('#list').append("<div id='"+ id + "' class='tab-pane fade in active'"+ ">")
                     $("#"+id).jJsonViewer(data.output[i]);
                   }
                 });
