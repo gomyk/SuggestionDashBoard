@@ -24,6 +24,9 @@ html
         $(document).ready(function() {
           var json = $.getJSON("#{path}", function(data){
               console.log(data.output.length);
+              $('#navtab').append("<li class='active'><a data-toggle='tab' href='#total'>Total</a></li>");
+              $('#list').append("<div id='total' class='tab-pane fade in active'>")
+              $("#total").jJsonViewer(data.output);
               for(var i = 0;i<data.output.length;++i){
                     var id = "keyword"+i;
                     $('#navtab').append("<li><a data-toggle='tab' href='#"+id +"'>"+data.output[i].keyword +"</a></li>");
