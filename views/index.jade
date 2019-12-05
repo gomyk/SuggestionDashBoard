@@ -1,19 +1,33 @@
 html
   head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js')
     script(type= 'text/javascript', src = '/lib/jquery.js')
     link(rel='stylesheet', href='jjsonviewer.css')
     script(src='jjsonviewer.js')
-    p Download original output json
-    a(href= "#{link}") #{link}
+    h1 Script output result
   body
     p
     p
-    div(style='border: 2px solid black')
-      #jjson.jjson
+    a(href='#{link}')
+      button.btn.btn-primary(type='button') Download original output json
+    ul#navtab.nav.nav-tabs
+      li.active
+        a(href='#') Keywords
+    p
+    div(style='border: 2px solid black' id='list')
       script(type='text/javascript').
         $(document).ready(function() {
           var json = $.getJSON("#{path}", function(data){
-              console.log(data);
-              $("#jjson").jJsonViewer(data);    
-            });
-          });
+              console.log(data.output.length);
+              for(var i = 0;i<data.output.length;++i){
+                    var id = "keyword"+i;
+                    $('#navtab').append("<li><a href="+ "#"+id + ">"+data.output[i].keyword +"</a></li>");
+                    $('#list').append("<div id="+id+">")
+                    $("#"+id).jJsonViewer(data.output[i]);
+                  }
+                });
+              });
