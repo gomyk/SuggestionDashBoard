@@ -32,34 +32,34 @@ router.get('/', function(req, res, next) {
   res.render('upload');
 });
 
-router.post('/', function(req, res, next) {
-  upload(req,res,function(err) {
-    if(err){
-      console.log(err);
-      res.send(500,'somthing wrong');
-    } else{
-      var data = {
-        "deviceId":req.body.deviceId,
-        "timestamp":req.body.timestamp,
-        "filename":req.body.filename,
-        "filesize":req.file.size
-      };
+// router.post('/', function(req, res, next) {
+//   upload(req,res,function(err) {
+//     if(err){
+//       console.log(err);
+//       res.send(500,'somthing wrong');
+//     } else{
+//       var data = {
+//         "deviceId":req.body.deviceId,
+//         "timestamp":req.body.timestamp,
+//         "filename":req.body.filename,
+//         "filesize":req.file.size
+//       };
 
-      request({
-        url: 'http://localhost:3003/suggestion',
-        method : 'POST',
-        json : data
-      },function (err,res,body) {
-          if(err){
-            console.log(500);
-          } else{
-            console.log(200);
-          }
-      });
-      res.send(200);
-    }
-  });
-});
+//       request({
+//         url: 'http://localhost:3003/suggestion',
+//         method : 'POST',
+//         json : data
+//       },function (err,res,body) {
+//           if(err){
+//             console.log(500);
+//           } else{
+//             console.log(200);
+//           }
+//       });
+//       res.send(200);
+//     }
+//   });
+// });
 
 
 module.exports = router;
