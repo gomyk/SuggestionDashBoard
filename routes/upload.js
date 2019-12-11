@@ -56,8 +56,7 @@ router.post('/', function(req, res, next) {
 //             console.log(200);
 //           }
 //       });
-//       res.send(200);
-//     }
+       res.send(200);    
   });
 });
 
