@@ -63,7 +63,7 @@ router.post('/', function(req, res, next) {
 function saveJsonToFile(jsonObject){
   try {
     fs.writeFileSync('./uploads/output/'+jsonObject.filename+'.json',
-    JSON.stringify(jsonObject.output));
+    JSON.stringify(jsonObject));
   } catch (err) {
     console.log(err);
   }
