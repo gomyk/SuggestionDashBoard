@@ -46,7 +46,7 @@ router.post('/', function(req, res, next) {
       };
 
       request({
-        url: 'http://localhost:3003/pkgfile',
+        url: 'http://localhost:3003/suggestion',
         method : 'POST',
         json : data
       },function (err,res,body) {
