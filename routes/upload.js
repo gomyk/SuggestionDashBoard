@@ -44,6 +44,7 @@ router.post('/', function(req, res, next) {
         "filename":req.body.filename,
         "filesize":req.file.size
       };
+    }
 
 //       request({
 //         url: 'http://localhost:3003/suggestion',
