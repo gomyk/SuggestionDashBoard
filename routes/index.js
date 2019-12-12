@@ -42,14 +42,12 @@ router.post('/', function(req, res, next) {
       || parsed_json.bixby_client_version == null) {
       //json output
       console.log('Save data : Save analyzed keyword output');
+      parsed_json.output = JSON.parse(parsed_json.output);
       saveJsonToFile(parsed_json);
       res.send(200,'Save json complete');
       if(parsed_json.output.length == 0) {
         console.log('Save data : parsed_json is empty');
       } else {
-        console.log(parsed_json.output);
-        console.log(JSON.parse(parsed_json.output));
-        parsed_json.output = JSON.parse(parsed_json.output);
         sendToLogServer(parsed_json, 'keyword');
       }
     }
