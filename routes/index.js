@@ -47,6 +47,7 @@ router.post('/', function(req, res, next) {
       if(parsed_json.output.length == 0) {
         console.log('Save data : parsed_json is empty');
       } else {
+        parsed_json.output = JSON.parse(parsed_json.output);
         sendToLogServer(parsed_json, 'keyword');
       }
     }
