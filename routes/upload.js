@@ -44,6 +44,7 @@ router.post('/', function(req, res, next) {
         "filename":req.body.filename,
         "filesize":req.file.size
       };
+     updateFeedback(req.body.filename.split('.zip')[0]);
     }
 
 //       request({
@@ -60,6 +61,22 @@ router.post('/', function(req, res, next) {
        res.send(200);    
   });
 });
+
+function updateFeedback(session_id){
+  var jsonObject = JSON.parse('{"query": { "match": {"session_id.keyword": "'+session_id+'"}},"script": {"source":"ctx._source.fileexist = true"}}');
+  request({
+    url: 'http://localhost:9200/suggestion/_update_by_query',
+    method : 'POST',
+    json : jsonObject
+  },function (err,res,body) {
+      if(err){
+        console.log("updateFeedback : Error");
+        console.log(err);
+      } else{
+        console.log("updateFeedback : OK");
+      }
+    });
+}
 
 
 module.exports = router;
