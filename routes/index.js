@@ -57,12 +57,12 @@ router.post('/', function(req, res, next) {
     }
     else if(parsed_json.feedback == undefined) {
       res.send(200,'Parse data : OK...try send log');
-      parsed_json.negativefeedback = 'false';
+      parsed_json.negativefeedback = false;
       sendToLogServer(parsed_json, 'suggestion');
     }
     else {
       res.send(200,'Parse data : OK...try send log');
-      parsed_json.negativefeedback = 'true';
+      parsed_json.negativefeedback = true;
       sendToLogServer(parsed_json, 'feedback');
     }
   }
@@ -95,9 +95,9 @@ function sendToLogServer(jsonObject, index){
     });
 }
 function updateFeedback(session_id){
-  var jsonObject = JSON.parse('{"query": { "match": {"session_id.keyword": "2019-12-13 11:42:43.363_bf0712"}},"script": {"source":"ctx._source.negativefeedback = 'true'"}}');
+  var jsonObject = JSON.parse('{"query": { "match": {"session_id.keyword": "2019-12-13 11:42:43.363_bf0712"}},"script": {"source":"ctx._source.negativefeedback = true"}}');
   request({
-    url: 'http://localhost:9200/suggestion/update_by_query',
+    url: 'http://localhost:9200/suggestion/_update_by_query',
     method : 'POST',
     json : jsonObject
   },function (err,res,body) {
