@@ -95,12 +95,7 @@ function sendToLogServer(jsonObject, index){
     });
 }
 function updateFeedback(session_id){
-  var jsonObject = {
-  query: { match: {session_id.keyword: session_id}
-  },
-  script: {
-    source:"ctx._source.negativefeedback = 'true'"
-  }};
+  var jsonObject = JSON.parse('{"query": { "match": {"session_id.keyword": "2019-12-13 11:42:43.363_bf0712"}},"script": {"source":"ctx._source.negativefeedback = 'true'"}}');
   request({
     url: 'http://localhost:9200/suggestion/update_by_query',
     method : 'POST',
