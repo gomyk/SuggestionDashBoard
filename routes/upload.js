@@ -45,11 +45,11 @@ router.post('/', function(req, res, next) {
         "filesize":req.file.size
       };
       //send after 10 sec
-      setTimeout(function() {
-        var session_id = req.body.filename.split('.zip')[0];
-        console.log("send pkg exist filename : "+session_id);
-        updateFeedback(session_id);
-      }, 10000);
+//       setTimeout(function() {
+//         var session_id = req.body.filename.split('.zip')[0];
+//         console.log("send pkg exist filename : "+session_id);
+//         updateFeedback(session_id);
+//       }, 10000);
     }
 
 //       request({
