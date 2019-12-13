@@ -58,6 +58,7 @@ router.post('/', function(req, res, next) {
     else if(parsed_json.feedback == undefined) {
       res.send(200,'Parse data : OK...try send log');
       parsed_json.negativefeedback = false;
+      parsed_json.fileexist = false;
       sendToLogServer(parsed_json, 'suggestion');
     }
     else {
