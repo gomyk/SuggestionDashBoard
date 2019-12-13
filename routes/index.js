@@ -54,9 +54,14 @@ router.post('/', function(req, res, next) {
     else if(parsed_json.bixby_client_version <= '2.2.46.85') {
       console.log('Parse data : Low version');
       res.send(500,'Parse data : Low version');
-    } else {
+    } 
+    else if(parsed_json.feedback == undefined) {
       res.send(200,'Parse data : OK...try send log');
       sendToLogServer(parsed_json, 'suggestion');
+    }
+    else {
+      res.send(200,'Parse data : OK...try send log');
+      sendToLogServer(parsed_json, 'feedback');
     }
   }
 });
