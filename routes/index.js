@@ -44,6 +44,7 @@ router.post('/', function(req, res, next) {
       console.log('Save data : Save analyzed keyword output');
       parsed_json.output = JSON.parse(parsed_json.output);
       saveJsonToFile(parsed_json);
+      updateFeedback(parsed_json.filename,'suggestion','fileexist');
       res.send(200,'Save json complete');
       if(parsed_json.output.length == 0) {
         console.log('Save data : parsed_json is empty');
@@ -95,23 +96,23 @@ function sendToLogServer(jsonObject, index){
       } else{
         console.log("Send log : OK");
         if(index == 'feedback'){
-          updateFeedback(jsonObject.session_id);
+          updateFeedback(jsonObject.session_id,'suggestion','negativefeedback');
         }
       }
     });
 }
-function updateFeedback(session_id){
-  var jsonObject = JSON.parse('{"query": { "match": {"session_id.keyword": "'+session_id+'"}},"script": {"source":"ctx._source.negativefeedback = true"}}');
+function updateFeedback(session_id,index,field){
+  var jsonObject = JSON.parse('{"query": { "match": {"session_id.keyword": "'+session_id+'"}},"script": {"source":"ctx._source.'+field+' = true"}}');
   request({
-    url: 'http://localhost:9200/suggestion/_update_by_query',
+    url: 'http://localhost:9200/'+index+'/_update_by_query',
     method : 'POST',
     json : jsonObject
   },function (err,res,body) {
       if(err){
-        console.log("updateFeedback : Error");
+        console.log(field+" : Error");
         console.log(err);
       } else{
-        console.log("updateFeedback : OK");
+        console.log(field+" : OK");
       }
     });
 }
