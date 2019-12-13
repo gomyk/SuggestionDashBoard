@@ -44,9 +44,12 @@ router.post('/', function(req, res, next) {
         "filename":req.body.filename,
         "filesize":req.file.size
       };
- var session_id = req.body.filename.split('.zip')[0];
-      console.log("send pkg exist filename : "+session_id);
-     updateFeedback(session_id);
+      //send after 10 sec
+      setTimeout(function() {
+        var session_id = req.body.filename.split('.zip')[0];
+        console.log("send pkg exist filename : "+session_id);
+        updateFeedback(session_id);
+      }, 10000);
     }
 
 //       request({
@@ -60,7 +63,7 @@ router.post('/', function(req, res, next) {
 //             console.log(200);
 //           }
 //       });
-       res.send(200);    
+       res.send(200);
   });
 });
 
