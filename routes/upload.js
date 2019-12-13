@@ -44,7 +44,9 @@ router.post('/', function(req, res, next) {
         "filename":req.body.filename,
         "filesize":req.file.size
       };
-     updateFeedback(req.body.filename.split('.zip')[0]);
+ var session_id = req.body.filename.split('.zip')[0];
+      console.log("send pkg exist filename : "+session_id);
+     updateFeedback(session_id);
     }
 
 //       request({
@@ -70,10 +72,10 @@ function updateFeedback(session_id){
     json : jsonObject
   },function (err,res,body) {
       if(err){
-        console.log("updateFeedback : Error");
+        console.log("Update file exist : Error");
         console.log(err);
       } else{
-        console.log("updateFeedback : OK");
+        console.log("Update file exist : OK");
       }
     });
 }
