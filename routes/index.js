@@ -54,13 +54,15 @@ router.post('/', function(req, res, next) {
     else if(parsed_json.bixby_client_version <= '2.2.46.85') {
       console.log('Parse data : Low version');
       res.send(500,'Parse data : Low version');
-    } 
+    }
     else if(parsed_json.feedback == undefined) {
       res.send(200,'Parse data : OK...try send log');
+      parsed_json.negativefeedback = 'false';
       sendToLogServer(parsed_json, 'suggestion');
     }
     else {
       res.send(200,'Parse data : OK...try send log');
+      parsed_json.negativefeedback = 'true';
       sendToLogServer(parsed_json, 'feedback');
     }
   }
@@ -86,6 +88,29 @@ function sendToLogServer(jsonObject, index){
         console.log(err);
       } else{
         console.log("Send log : OK");
+        if(index == 'feedback'){
+          updateFeedback(jsonObject.session_id);
+        }
+      }
+    });
+}
+function updateFeedback(session_id){
+  var jsonObject = {
+  query: { match: {session_id.keyword: session_id}
+  },
+  script: {
+    source:"ctx._source.negativefeedback = 'true'"
+  }};
+  request({
+    url: 'http://localhost:9200/suggestion/update_by_query',
+    method : 'POST',
+    json : jsonObject
+  },function (err,res,body) {
+      if(err){
+        console.log("updateFeedback : Error");
+        console.log(err);
+      } else{
+        console.log("updateFeedback : OK");
       }
     });
 }
