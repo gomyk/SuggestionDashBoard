@@ -45,6 +45,7 @@ router.post('/', function(req, res, next) {
       parsed_json.output = JSON.parse(parsed_json.output);
       saveJsonToFile(parsed_json);
       updateFeedback(parsed_json.filename,'suggestion','fileexist');
+      updateFeedback(parsed_json.filename,'feedback','fileexist');
       res.send(200,'Save json complete');
       if(parsed_json.output.length == 0) {
         console.log('Save data : parsed_json is empty');
@@ -70,6 +71,11 @@ router.post('/', function(req, res, next) {
     else {
       res.send(200,'Parse data : OK...try send log');
       parsed_json.negativefeedback = true;
+      if(fs.existsSync('./uploads/output/'+parsed_json.session_id+'.json')) {
+        parsed_json.fileexist = true;
+      } else {
+        parsed_json.fileexist = false;
+      }
       sendToLogServer(parsed_json, 'feedback');
     }
   }
@@ -109,10 +115,10 @@ function updateFeedback(session_id,index,field){
     json : jsonObject
   },function (err,res,body) {
       if(err){
-        console.log(field+" : Error");
+        console.log(session_id +' : '+field+ ' : '+ index + " : Error");
         console.log(err);
       } else{
-        console.log(field+" : OK");
+        console.log(session_id +' : '+field+ ' : '+ index + " : OK");
       }
     });
 }
