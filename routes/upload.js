@@ -29,7 +29,7 @@ var upload = multer({
 router.get('/', function(req, res, next) {
   console.log("get routing test");
 
-  res.render('upload');
+  res.render('upload.html');
 });
 
 router.post('/', function(req, res, next) {
