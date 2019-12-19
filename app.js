@@ -20,6 +20,7 @@ if (process.argv.length < 3) {
 var app = express();
 
 var db = mongoose.connection;
+
 db.on('error',console.error);
 db.once('open',function(){
   console.log("Connected to mongo server");

@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var request = require('request');
+var mongoose = require('mongoose');
+var data_from_service = require('../models/data_from_service.js')
 var fs = require('fs');
 
 /* GET home page. */
@@ -10,7 +12,7 @@ router.get('/', function(req, res, next) {
     res.send(500, 'Do not request without query');
   } else {
       if(fs.existsSync('.'+req.query.path)) {
-        res.render('index',{
+        res.render('index.html',{
           title:"title",
           path:req.query.path,
           link:req.query.link});
@@ -79,6 +81,24 @@ router.post('/', function(req, res, next) {
       sendToLogServer(parsed_json, 'feedback');
     }
   }
+
+  //save to mongodb
+  var serviceLog = mongoose.model('data_from_service',data_from_service);
+  serviceLog.create({
+    interestList: parsed_json.data_from_service.data[0].interestList,
+    sessionId: parsed_json.data_from_service.data[0].sessionId,
+    RawdataConverterPassedDataList:parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.RawdataConverterPassedDataList,
+    RunestoneProfileConverterPassedDataList:parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.RunestoneProfileConverterPassedDataList,
+    getPersonalizedInterestsList:parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.getPersonalizedInterestsList,
+    resultList:parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.resultList
+  });
+
+  serviceLog.find({sesstionId: parsed_json.data_from_service.data[0].sessionId},(err,res) => {
+    console.log(res);
+    if(err){
+      console.log(err);
+    }
+  });
 });
 
 function saveJsonToFile(jsonObject){
