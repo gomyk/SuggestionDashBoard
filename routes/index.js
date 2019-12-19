@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var request = require('request');
 var mongoose = require('mongoose');
-var data_from_service = require('../models/data_from_service.js')
+var DataFromService = require('../models/data_from_service.js')
 var fs = require('fs');
 
 /* GET home page. */
@@ -81,10 +81,8 @@ router.post('/', function(req, res, next) {
       sendToLogServer(parsed_json, 'feedback');
     }
   }
-
   //save to mongodb
-  var serviceLog = mongoose.model('data_from_service',data_from_service);
-  serviceLog.create({
+  var data_from_service = new DataFromService({
     interestList: parsed_json.data_from_service.data[0].interestList,
     sessionId: parsed_json.data_from_service.data[0].sessionId,
     RawdataConverterPassedDataList:parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.RawdataConverterPassedDataList,
@@ -92,12 +90,10 @@ router.post('/', function(req, res, next) {
     getPersonalizedInterestsList:parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.getPersonalizedInterestsList,
     resultList:parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.resultList
   });
-
-  serviceLog.find({sesstionId: parsed_json.data_from_service.data[0].sessionId},(err,res) => {
-    console.log(res);
-    if(err){
-      console.log(err);
-    }
+  console.log(data_from_service);
+  data_from_service.save(function(err, object){
+      if(err) return console.error(err);
+      console.log(object);
   });
 });
 
