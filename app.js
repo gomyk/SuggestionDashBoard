@@ -10,6 +10,7 @@ var uploadRouter = require('./routes/upload');
 var indexRouter = require('./routes/index');
 var serveIndex = require('serve-index');
 var serveStatic = require('serve-static');
+var mongoose = require('mongoose');
 
 if (process.argv.length < 3) {
   console.log("Usage: npm start [url]\n");
@@ -17,6 +18,15 @@ if (process.argv.length < 3) {
 }
 
 var app = express();
+
+var db = mongoose.connection;
+db.on('error',console.error);
+db.once('open',function(){
+  console.log("Connected to mongo server");
+});
+
+mongoose.connect('mongodb://localhost/suggestion');
+
 const PORT = 3000;
 
 // view engine setup
