@@ -198,32 +198,20 @@ function updateFeedbackToDB(session) {
 }
 
 function updateFileExistToDB(session) {
-  Suggestion.findOne({ session_id : session}, function(err,result) {
-     if(err) {
-       console.log(err);
-       return;
-     }
-     Suggestion.update({fileexist: true} , {updated: true} , function(err,update_result) {
+     Suggestion.update({session_id: session} , {fileexist: true}, function(err,update_result) {
        if(err) {
          console.log(err);
          return;
        }
        console.log(update_result);
      });
-  });
 
-  Feedback.findOne({ session_id : session}, function(err,result) {
-     if(err) {
-       console.log(err);
-       return;
-     }
-     Feedback.update({fileexist: true} , {updated: true} , function(err,update_result) {
+     Feedback.update({session_id: session}, {fileexist: true}, function(err,update_result) {
        if(err) {
          console.log(err);
          return;
        }
        console.log(update_result);
      });
-  });
 }
 module.exports = router;
