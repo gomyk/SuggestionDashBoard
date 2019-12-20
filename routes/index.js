@@ -89,8 +89,8 @@ router.post('/', function(req, res, next) {
 });
 function saveSuggestionLog(parsed_json) {
   //save to mongodb
-  if(parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterest.JRDFoxExceptionList == undefined) {
-    parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterest.JRDFoxExceptionList = [];
+  if(parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.JRDFoxExceptionList == undefined) {
+    parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.JRDFoxExceptionList = [];
   }
   var suggestion = new Suggestion({
     bixby_client_version: parsed_json.bixby_client_version,
@@ -114,7 +114,7 @@ function saveSuggestionLog(parsed_json) {
     RunestoneProfileConverterPassedDataList:parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.RunestoneProfileConverterPassedDataList,
     getPersonalizedInterestsList:parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.getPersonalizedInterestsList,
     resultList:parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.resultList,
-    JRDFoxExceptionList:parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterest.JRDFoxExceptionList
+    JRDFoxExceptionList:parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.JRDFoxExceptionList
   });
 
   suggestion.save(function(err, object){
