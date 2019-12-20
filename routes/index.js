@@ -133,8 +133,8 @@ function saveFeedbackLog(parsed_json) {
     interest_feedback: parsed_json.feedback.interest_feedback,
     fileexist: parsed_json.fileexist,
     filename: parsed_json.filename,
-    negativefeedback: parsed_json.negativefeedback,
-    session_Id: parsed_json.session_id
+    session_id: parsed_json.session_id,
+    negativefeedback: parsed_json.negativefeedback
   });
 
   feedback.save(function(err, object){
