@@ -81,6 +81,7 @@ router.post('/', function(req, res, next) {
       } else {
         parsed_json.fileexist = false;
       }
+      saveFeedbackLog(parsed_json);
       updateFeedbackToDB(parsed_json.session_id);
       sendToLogServer(parsed_json, 'feedback');
     }
