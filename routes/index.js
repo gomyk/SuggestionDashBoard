@@ -188,20 +188,13 @@ function updateFeedback(session_id,index,field){
 }
 
 function updateFeedbackToDB(session) {
-  Suggestion.findOne({ session_id : session}, function(err,result) {
+   Suggestion.update({session_id: session},{negativefeedback: true} , function(err,update_result) {
      if(err) {
        console.log(err);
        return;
-     }
-     console.log(result);
-     Suggestion.update({negativefeedback: true} , {updated: true} , function(err,update_result) {
-       if(err) {
-         console.log(err);
-         return;
-       }
-       console.log(update_result);
-     });
-  });
+      }
+     console.log(update_result);
+   });
 }
 
 function updateFileExistToDB(session) {
