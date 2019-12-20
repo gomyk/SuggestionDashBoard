@@ -187,12 +187,13 @@ function updateFeedback(session_id,index,field){
     });
 }
 
-function updateFeedbackToDB(session_id) {
-  Suggestion.findOne({ session_id : session_id}, function(err,result) {
+function updateFeedbackToDB(session) {
+  Suggestion.findOne({ session_id : session}, function(err,result) {
      if(err) {
        console.log(err);
        return;
      }
+     console.log(result);
      Suggestion.update({negativefeedback: true} , {updated: true} , function(err,update_result) {
        if(err) {
          console.log(err);
@@ -203,8 +204,8 @@ function updateFeedbackToDB(session_id) {
   });
 }
 
-function updateFileExistToDB(seesion_id) {
-  Suggestion.findOne({ session_id : session_id}, function(err,result) {
+function updateFileExistToDB(session) {
+  Suggestion.findOne({ session_id : session}, function(err,result) {
      if(err) {
        console.log(err);
        return;
@@ -218,7 +219,7 @@ function updateFileExistToDB(seesion_id) {
      });
   });
 
-  Feedback.findOne({ session_id : session_id}, function(err,result) {
+  Feedback.findOne({ session_id : session}, function(err,result) {
      if(err) {
        console.log(err);
        return;
