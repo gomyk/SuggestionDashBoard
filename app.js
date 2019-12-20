@@ -26,7 +26,7 @@ db.once('open',function(){
   console.log("Connected to mongo server");
 });
 
-mongoose.connect('mongodb://localhost:27017/suggestion');
+mongoose.connect('mongodb://localhost:27017/logging');
 
 const PORT = 3000;
 

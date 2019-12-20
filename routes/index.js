@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 var request = require('request');
 var mongoose = require('mongoose');
-var DataFromService = require('../models/data_from_service.js')
+var Suggestion = require('../models/suggestion.js');
+var Feedback = require('../models/feedback.js');
 var fs = require('fs');
 
 /* GET home page. */
@@ -46,6 +47,7 @@ router.post('/', function(req, res, next) {
       console.log('Save data : Save analyzed keyword output');
       parsed_json.output = JSON.parse(parsed_json.output);
       saveJsonToFile(parsed_json);
+      updateFileExistToDB(parsed_json.filename);
       updateFeedback(parsed_json.filename,'suggestion','fileexist');
       updateFeedback(parsed_json.filename,'feedback','fileexist');
       res.send(200,'Save json complete');
@@ -68,6 +70,7 @@ router.post('/', function(req, res, next) {
       } else {
         parsed_json.hint_data_count = 0;
       }
+      saveSuggestionLog(parsed_json);
       sendToLogServer(parsed_json, 'suggestion');
     }
     else {
@@ -78,11 +81,29 @@ router.post('/', function(req, res, next) {
       } else {
         parsed_json.fileexist = false;
       }
+      updateFeedbackToDB(parsed_json.session_id);
       sendToLogServer(parsed_json, 'feedback');
     }
   }
+});
+function saveSuggestionLog(parsed_json) {
   //save to mongodb
-  var data_from_service = new DataFromService({
+  var suggestion = new Suggestion({
+    bixby_client_version: parsed_json.bixby_client_version,
+    bixby_service_version: parsed_json.bixby_service_version,
+    country_code: parsed_json.country_code,
+    startTimeInMillis: parsed_json.data_from_service.startTimeInMillis,
+    startTime: parsed_json.data_from_service.startTime,
+    endTimeInMillis: parsed_json.data_from_service.endTimeInMillis,
+    endTime: parsed_json.data_from_service.endTime,
+    result: parsed_json.data_from_service.result,
+    device_id: parsed_json.device_id,
+    fileexist: parsed_json.fileexist,
+    hint_data_count: parsed_json.hint_data_count,
+    hint_data_list: parsed_json.hint_data_list,
+    log_version: parsed_json.log_version,
+    negativefeedback: parsed_json.negativefeedback,
+    session_id: parsed_json.session_id,
     interestList: parsed_json.data_from_service.data[0].interestList,
     sessionId: parsed_json.data_from_service.data[0].sessionId,
     RawdataConverterPassedDataList:parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.RawdataConverterPassedDataList,
@@ -90,12 +111,38 @@ router.post('/', function(req, res, next) {
     getPersonalizedInterestsList:parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.getPersonalizedInterestsList,
     resultList:parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.resultList
   });
-  console.log(data_from_service);
-  data_from_service.save(function(err, object){
-      if(err) return console.error(err);
-      console.log(object);
+
+  suggestion.save(function(err, object){
+      if(err) {
+        return console.log(err);
+      }
+      console.log('sessionId : ' + object.session_id + ' success');
   });
-});
+}
+
+function saveFeedbackLog(parsed_json) {
+  //save to mongodb
+  var feedback = new Feedback({
+    bixby_client_version: parsed_json.bixby_client_version,
+    bixby_service_version: parsed_json.bixby_service_version,
+    country_code: parsed_json.country_code,
+    device_id: parsed_json.device_id,
+    command_list: parsed_json.feedback.command_list,
+    interest: parsed_json.feedback.interest,
+    interest_feedback: parsed_json.feedback.interest_feedback,
+    fileexist: parsed_json.fileexist,
+    filename: parsed_json.filename,
+    negativefeedback: parsed_json.negativefeedback,
+    session_Id: parsed_json.session_id
+  });
+
+  feedback.save(function(err, object){
+      if(err) {
+        return console.log(err);
+      }
+      console.log('sessionId : ' + object.session_id + ' success');
+  });
+}
 
 function saveJsonToFile(jsonObject){
   try {
@@ -137,5 +184,51 @@ function updateFeedback(session_id,index,field){
         console.log(session_id +' : '+field+ ' : '+ index + " : OK");
       }
     });
+}
+
+function updateFeedbackToDB(session_id) {
+  Suggestion.findOne({ session_id : session_id}, function(err,result) {
+     if(err) {
+       console.log(err);
+       return;
+     }
+     Suggestion.update({negativefeedback: true} , {updated: true} , function(err,update_result) {
+       if(err) {
+         console.log(err);
+         return;
+       }
+       console.log(update_result);
+     });
+  });
+}
+
+function updateFileExistToDB(seesion_id) {
+  Suggestion.findOne({ session_id : session_id}, function(err,result) {
+     if(err) {
+       console.log(err);
+       return;
+     }
+     Suggestion.update({fileexist: true} , {updated: true} , function(err,update_result) {
+       if(err) {
+         console.log(err);
+         return;
+       }
+       console.log(update_result);
+     });
+  });
+
+  Feedback.findOne({ session_id : session_id}, function(err,result) {
+     if(err) {
+       console.log(err);
+       return;
+     }
+     Feedback.update({fileexist: true} , {updated: true} , function(err,update_result) {
+       if(err) {
+         console.log(err);
+         return;
+       }
+       console.log(update_result);
+     });
+  });
 }
 module.exports = router;
