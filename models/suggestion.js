@@ -23,6 +23,7 @@ var userSchema  = {
   RawdataConverterPassedDataList: 'Mixed',
   RunestoneProfileConverterPassedDataList: 'Mixed',
   getPersonalizedInterestsList: 'Mixed',
-  resultList: 'Mixed'
+  resultList: 'Mixed',
+  JRDFoxExceptionList:'Mixed'
 };
 module.exports = mongoose.model('suggestion',userSchema);

@@ -18,7 +18,7 @@ router.get('/', function(req, res, next) {
           path:req.query.path,
           link:req.query.link});
       } else {
-        res.render('error',{
+        res.render('error.html',{
           message:'File not found',
           detail:'It may take some time for a file to be created'});
       }
@@ -110,7 +110,8 @@ function saveSuggestionLog(parsed_json) {
     RawdataConverterPassedDataList:parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.RawdataConverterPassedDataList,
     RunestoneProfileConverterPassedDataList:parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.RunestoneProfileConverterPassedDataList,
     getPersonalizedInterestsList:parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.getPersonalizedInterestsList,
-    resultList:parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.resultList
+    resultList:parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.resultList,
+    JRDFoxExceptionList:parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterest.JRDFoxExceptionList
   });
 
   suggestion.save(function(err, object){
