@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var request = require('request');
+var mongoose = require('mongoose');
+var Suggestion = require('../models/suggestion.js');
+var Feedback = require('../models/feedback.js');
 var fs = require('fs');
 
 /* GET home page. */
@@ -10,7 +13,7 @@ router.get('/', function(req, res, next) {
     res.send(500, 'Do not request without query');
   } else {
       if(fs.existsSync('.'+req.query.path)) {
-        res.render('index',{
+        res.render('index.html',{
           title:"title",
           path:req.query.path,
           link:req.query.link});
@@ -44,6 +47,7 @@ router.post('/', function(req, res, next) {
       console.log('Save data : Save analyzed keyword output');
       parsed_json.output = JSON.parse(parsed_json.output);
       saveJsonToFile(parsed_json);
+      updateFileExistToDB(parsed_json.filename);
       updateFeedback(parsed_json.filename,'suggestion','fileexist');
       updateFeedback(parsed_json.filename,'feedback','fileexist');
       res.send(200,'Save json complete');
@@ -66,6 +70,7 @@ router.post('/', function(req, res, next) {
       } else {
         parsed_json.hint_data_count = 0;
       }
+      saveSuggestionLog(parsed_json);
       sendToLogServer(parsed_json, 'suggestion');
     }
     else {
@@ -76,10 +81,69 @@ router.post('/', function(req, res, next) {
       } else {
         parsed_json.fileexist = false;
       }
+      saveFeedbackLog(parsed_json);
+      updateFeedbackToDB(parsed_json.session_id);
       sendToLogServer(parsed_json, 'feedback');
     }
   }
 });
+function saveSuggestionLog(parsed_json) {
+  //save to mongodb
+  var suggestion = new Suggestion({
+    bixby_client_version: parsed_json.bixby_client_version,
+    bixby_service_version: parsed_json.bixby_service_version,
+    country_code: parsed_json.country_code,
+    startTimeInMillis: parsed_json.data_from_service.startTimeInMillis,
+    startTime: parsed_json.data_from_service.startTime,
+    endTimeInMillis: parsed_json.data_from_service.endTimeInMillis,
+    endTime: parsed_json.data_from_service.endTime,
+    result: parsed_json.data_from_service.result,
+    device_id: parsed_json.device_id,
+    fileexist: parsed_json.fileexist,
+    hint_data_count: parsed_json.hint_data_count,
+    hint_data_list: parsed_json.hint_data_list,
+    log_version: parsed_json.log_version,
+    negativefeedback: parsed_json.negativefeedback,
+    session_id: parsed_json.session_id,
+    interestList: parsed_json.data_from_service.data[0].interestList,
+    sessionId: parsed_json.data_from_service.data[0].sessionId,
+    RawdataConverterPassedDataList:parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.RawdataConverterPassedDataList,
+    RunestoneProfileConverterPassedDataList:parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.RunestoneProfileConverterPassedDataList,
+    getPersonalizedInterestsList:parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.getPersonalizedInterestsList,
+    resultList:parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.resultList
+  });
+
+  suggestion.save(function(err, object){
+      if(err) {
+        return console.log(err);
+      }
+      console.log('sessionId : ' + object.session_id + ' success');
+  });
+}
+
+function saveFeedbackLog(parsed_json) {
+  //save to mongodb
+  var feedback = new Feedback({
+    bixby_client_version: parsed_json.bixby_client_version,
+    bixby_service_version: parsed_json.bixby_service_version,
+    country_code: parsed_json.country_code,
+    device_id: parsed_json.device_id,
+    command_list: parsed_json.feedback.command_list,
+    interest: parsed_json.feedback.interest,
+    interest_feedback: parsed_json.feedback.interest_feedback,
+    fileexist: parsed_json.fileexist,
+    filename: parsed_json.filename,
+    session_id: parsed_json.session_id,
+    negativefeedback: parsed_json.negativefeedback
+  });
+
+  feedback.save(function(err, object){
+      if(err) {
+        return console.log(err);
+      }
+      console.log('sessionId : ' + object.session_id + ' success');
+  });
+}
 
 function saveJsonToFile(jsonObject){
   try {
@@ -121,5 +185,33 @@ function updateFeedback(session_id,index,field){
         console.log(session_id +' : '+field+ ' : '+ index + " : OK");
       }
     });
+}
+
+function updateFeedbackToDB(session) {
+   Suggestion.update({session_id: session},{negativefeedback: true} , function(err,update_result) {
+     if(err) {
+       console.log(err);
+       return;
+      }
+     console.log(update_result);
+   });
+}
+
+function updateFileExistToDB(session) {
+     Suggestion.update({session_id: session} , {fileexist: true}, function(err,update_result) {
+       if(err) {
+         console.log(err);
+         return;
+       }
+       console.log(update_result);
+     });
+
+     Feedback.update({session_id: session}, {fileexist: true}, function(err,update_result) {
+       if(err) {
+         console.log(err);
+         return;
+       }
+       console.log(update_result);
+     });
 }
 module.exports = router;
