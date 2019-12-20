@@ -89,6 +89,9 @@ router.post('/', function(req, res, next) {
 });
 function saveSuggestionLog(parsed_json) {
   //save to mongodb
+  if(parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterest.JRDFoxExceptionList == undefined) {
+    parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterest.JRDFoxExceptionList = [];
+  }
   var suggestion = new Suggestion({
     bixby_client_version: parsed_json.bixby_client_version,
     bixby_service_version: parsed_json.bixby_service_version,
