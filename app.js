@@ -13,6 +13,7 @@ var indexRouter = require('./routes/index');
 var serveIndex = require('serve-index');
 var serveStatic = require('serve-static');
 var mongoose = require('mongoose');
+var cors = require('cors');
 
 if (process.argv.length < 3) {
   console.log("Usage: npm start [url]\n");
@@ -37,6 +38,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.engine('html',require('ejs').renderFile);
 
+app.use(cors());
 app.use(logger('dev'));
 app.use(cookieParser());
 app.use(express.static(__dirname + '/public'));
