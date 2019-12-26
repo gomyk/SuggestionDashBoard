@@ -46,7 +46,7 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 app.use('/', indexRouter);
 app.use('/feedback', feedbackRouter);
-app.use('/suggestion', suggestionRouter');
+app.use('/suggestion', suggestionRouter);
 app.use('/upload', uploadRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
