@@ -5,12 +5,12 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  if(req.body.query == undefined || req.body.query == null) {
+  if(req.query.q == undefined || req.query.q == null) {
     console.log('query not found error');
     res.send(500, 'query not found');
     return;
   }
-  var parsed_query = JSON.parse(req.body.query);
+  var parsed_query = JSON.parse(req.query.q);
   if(parsed_query == null) {
     console.log('parsed query is null');
     res.send(500, 'query parse error');
