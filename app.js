@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var fs = require('fs');
 var https = require('https');
 var suggestionRouter = require('./routes/suggestion');
-var feedbackRouter = require('./routes/feedback');
+//var feedbackRouter = require('./routes/feedback');
 var uploadRouter = require('./routes/upload');
 var indexRouter = require('./routes/index');
 var serveIndex = require('serve-index');
@@ -45,7 +45,7 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 
 app.use('/', indexRouter);
-app.use('/feedback', feedbackRouter);
+//app.use('/feedback', feedbackRouter);
 app.use('/suggestion', suggestionRouter);
 app.use('/upload', uploadRouter);
 // catch 404 and forward to error handler
