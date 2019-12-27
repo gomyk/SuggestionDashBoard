@@ -92,7 +92,9 @@ function saveSuggestionLog(parsed_json) {
   if(parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.JRDFoxExceptionList == undefined) {
     parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.JRDFoxExceptionList = [];
   }
+
   var suggestion = new Suggestion({
+    timestamp: Date.now(),
     bixby_client_version: parsed_json.bixby_client_version,
     bixby_service_version: parsed_json.bixby_service_version,
     country_code: parsed_json.country_code,
@@ -128,6 +130,7 @@ function saveSuggestionLog(parsed_json) {
 function saveFeedbackLog(parsed_json) {
   //save to mongodb
   var feedback = new Feedback({
+    timestamp: Date.now(),
     bixby_client_version: parsed_json.bixby_client_version,
     bixby_service_version: parsed_json.bixby_service_version,
     country_code: parsed_json.country_code,

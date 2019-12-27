@@ -1,6 +1,7 @@
 var mongoose = require("mongoose");
 var mongoSchema = mongoose.Schema;
 var userSchema  = {
+  timestamp: 'Number',
   bixby_client_version: 'String',
   bixby_service_version: 'String',
   country_code: 'String',
