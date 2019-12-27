@@ -11,12 +11,25 @@ router.get('/', function(req, res, next) {
     return;
   }
   var parsed_query = JSON.parse(req.query.q);
+  var selection = null;
+  var option = null;
+  if(req.query.s != undefined) {
+    selection = req.query.s;
+  }
+  if(req.query.o != undefined) {
+    option = JSON.parse(req.query.o);
+  }
   if(parsed_query == null) {
     console.log('parsed query is null');
     res.send(500, 'query parse error');
     return;
   }
-  Feedback.find(parsed_query, function(err , docs) {
+  if(parsed_query == null) {
+    console.log('parsed query is null');
+    res.send(500, 'query parse error');
+    return;
+  }
+  Feedback.find(parsed_query, selection, option, function(err , docs) {
     if(err){
       console.log(err);
       res.send(500, err);
