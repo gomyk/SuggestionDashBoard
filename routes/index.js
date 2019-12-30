@@ -104,8 +104,34 @@ router.post('/mongo', function(req, res, next) {
     console.log('Parse data : Json parse error');
     res.send(500,'Parse data : Json parse error');
   } else{
-    saveSuggestionLog(parsed_json);
-    res.send(200,'Parse data : OK...try send log');
+    if(parsed_json.bixby_client_version == undefined
+      || parsed_json.bixby_client_version == null) {
+      //json output
+      console.log('Save data : Save analyzed keyword output');
+      parsed_json.output = JSON.parse(parsed_json.output);
+      saveJsonToFile(parsed_json);
+      updateFileExistToDB(parsed_json.filename);
+      updateFeedback(parsed_json.filename,'suggestion','fileexist');
+      updateFeedback(parsed_json.filename,'feedback','fileexist');
+      res.send(200,'Save json complete');
+      if(parsed_json.output.length == 0) {
+        console.log('Save data : parsed_json is empty');
+      } else {
+        sendToLogServer(parsed_json, 'keyword');
+      }
+    }
+    else if(parsed_json.bixby_client_version <= '2.2.46.85') {
+      console.log('Parse data : Low version');
+      res.send(500,'Parse data : Low version');
+    }
+    else if(parsed_json.feedback == undefined) {
+      res.send(200,'Parse data : OK...try send log');
+      saveSuggestionLog(parsed_json);
+    }
+    else {
+      res.send(200,'Parse data : OK...try send log');
+      saveFeedbackLog(parsed_json);
+    }
   }
 });
 
