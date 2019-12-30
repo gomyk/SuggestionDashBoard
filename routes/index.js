@@ -104,8 +104,8 @@ router.post('/mongo', function(req, res, next) {
     console.log('Parse data : Json parse error');
     res.send(500,'Parse data : Json parse error');
   } else{
-    res.send(200,'Parse data : OK...try send log');
     saveSuggestionLog(parsed_json);
+    res.send(200,'Parse data : OK...try send log');
   }
 });
 
