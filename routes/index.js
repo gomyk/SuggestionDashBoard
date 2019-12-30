@@ -87,6 +87,28 @@ router.post('/', function(req, res, next) {
     }
   }
 });
+
+router.post('/mongo', function(req, res, next) {
+  var data = req.body.logging_data_table;
+  if(data == undefined || data == null){
+    console.log("Request error : There is no logging_data_table field in body");
+  }
+  var parsed_json = null;
+  try {
+    parsed_json = JSON.parse(data);
+  } catch (err){
+    console.log(err);
+  }
+
+  if(parsed_json == null){
+    console.log('Parse data : Json parse error');
+    res.send(500,'Parse data : Json parse error');
+  } else{
+    res.send(200,'Parse data : OK...try send log');
+    saveSuggestionLog(parsed_json);
+  }
+});
+
 function saveSuggestionLog(parsed_json) {
   //save to mongodb
   if(parsed_json.data_from_service.data[1].ReasoningEnginePersonalizedInterests.JRDFoxExceptionList == undefined) {
