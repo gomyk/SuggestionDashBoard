@@ -70,7 +70,7 @@ router.post('/', function(req, res, next) {
       return;
     }
     if(docs.length > 0) {
-      parking.update({parking_id : parsed_json.parking_id}, parking_json ,function(err, object){
+      parking.updateOne({parking_id : parsed_json.parking_id}, parking_json ,function(err, object){
           console.log("Already have same parking Id");
           if(err) {
             return console.log(err);
