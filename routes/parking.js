@@ -68,6 +68,7 @@ router.post('/', function(req, res, next) {
         return console.log(err);
       }
       console.log('parking Id : ' + object.parking_id + ' success');
+      res.send(200);
   });
 });
 router.get('/update', function(req, res, next) {
