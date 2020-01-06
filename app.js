@@ -6,6 +6,7 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 var fs = require('fs');
 var https = require('https');
+var parkingRouter = require('./routes/parking');
 var suggestionRouter = require('./routes/suggestion');
 var feedbackRouter = require('./routes/feedback');
 var uploadRouter = require('./routes/upload');
@@ -50,6 +51,7 @@ app.use('/', indexRouter);
 app.use('/feedback', feedbackRouter);
 app.use('/suggestion', suggestionRouter);
 app.use('/upload', uploadRouter);
+app.use('/parking', parkingRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
