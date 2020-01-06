@@ -51,7 +51,7 @@ router.post('/', function(req, res, next) {
   } catch (err){
     console.log(err);
   }
-  var parking = new Parking({
+  var parking_json = {
     parking_id: parsed_json.parking_id,
     type: parsed_json.type,
     feedback: parsed_json.feedback,
@@ -61,14 +61,31 @@ router.post('/', function(req, res, next) {
     log_version: parsed_json.log_version,
     bixby_client_version: parsed_json.bixby_client_version,
     bixby_service_version: parsed_json.bixby_service_version
-  });
-
-  parking.save(function(err, object){
-      if(err) {
-        return console.log(err);
-      }
-      console.log('parking Id : ' + object.parking_id + ' success');
-      res.send(200);
+  };
+  var parking = new Parking(parking_json);
+  Parking.find({parking_id : parsed_json.parking_id}, function(err , docs) {
+    if(err){
+      console.log(err);
+      res.send(500, err);
+      return;
+    }
+    if(docs.length > 0) {
+      parking.update({parking_id : parsed_json.parking_id}, parking_json ,function(err, object){
+          if(err) {
+            return console.log(err);
+          }
+          console.log('parking Id : ' + object.parking_id + ' success');
+          res.send(200);
+      });
+    } else {
+      parking.save(function(err, object){
+          if(err) {
+            return console.log(err);
+          }
+          console.log('parking Id : ' + object.parking_id + ' success');
+          res.send(200);
+      });
+    }
   });
 });
 router.get('/update', function(req, res, next) {
