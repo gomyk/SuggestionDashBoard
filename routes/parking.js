@@ -55,7 +55,7 @@ router.post('/', function(req, res, next) {
     parking_id: parsed_json.parking_id,
     type: parsed_json.type,
     feedback: parsed_json.feedback,
-    feedback_comment: parsed_json.feddback_comment,
+    feedback_comment: parsed_json.feedback_comment,
     timestamp: Date.now(),
     device_id: parsed_json.device_id,
     log_version: parsed_json.log_version,
@@ -71,6 +71,7 @@ router.post('/', function(req, res, next) {
     }
     if(docs.length > 0) {
       parking.update({parking_id : parsed_json.parking_id}, parking_json ,function(err, object){
+          console.log("Already have same parking Id");
           if(err) {
             return console.log(err);
           }
