@@ -63,7 +63,7 @@ router.post('/', function(req, res, next) {
     }
     else if(parsed_json.feedback == undefined) {
       res.send(200,'Parse data : OK...try send log');
-      parsed_json.negativefeedback = false;
+      parsed_json.is_negative_feedback = false;
       parsed_json.fileexist = false;
       if(parsed_json.hint_data_list != undefined){
         parsed_json.hint_data_count = parsed_json.hint_data_list.length;
@@ -75,8 +75,8 @@ router.post('/', function(req, res, next) {
     }
     else {
       res.send(200,'Parse data : OK...try send log');
-      if(parsed_json.negativefeedback == undefined) {
-        parsed_json.negativefeedback = true;
+      if(parsed_json.is_negative_feedback == undefined) {
+        parsed_json.is_negative_feedback = true;
       }
       if(fs.existsSync('./uploads/output/'+parsed_json.session_id+'.json')) {
         parsed_json.fileexist = true;
@@ -158,7 +158,7 @@ function saveSuggestionLog(parsed_json) {
     hint_data_count: parsed_json.hint_data_count,
     hint_data_list: parsed_json.hint_data_list,
     log_version: parsed_json.log_version,
-    negativefeedback: parsed_json.negativefeedback,
+    is_negative_feedback: parsed_json.is_negative_feedback,
     session_id: parsed_json.session_id,
     interestList: parsed_json.data_from_service.data[0].interestList,
     sessionId: parsed_json.data_from_service.data[0].sessionId,
@@ -191,7 +191,7 @@ function saveFeedbackLog(parsed_json) {
     fileexist: parsed_json.fileexist,
     filename: parsed_json.filename,
     session_id: parsed_json.session_id,
-    negativefeedback: parsed_json.negativefeedback
+    is_negative_feedback: parsed_json.is_negative_feedback
   });
 
   feedback.save(function(err, object){

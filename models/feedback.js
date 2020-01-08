@@ -11,7 +11,7 @@ var userSchema  = {
   interest_feedback: 'String',
   fileexist: 'Boolean',
   filename: 'String',
-  negativefeedback: 'Boolean',
+  is_negative_feedback: 'Boolean',
   session_id: 'String'
 };
 module.exports = mongoose.model('feedback',userSchema);

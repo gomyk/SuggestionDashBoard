@@ -16,7 +16,7 @@ var userSchema  = {
   hint_data_count: 'Number',
   hint_data_list: 'Mixed',
   log_version: 'Number',
-  negativefeedback: 'Boolean',
+  is_negative_feedback: 'Boolean',
   session_id: 'String',
   time_of_request: 'Number',
   interestList: 'Mixed',
