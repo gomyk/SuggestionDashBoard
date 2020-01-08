@@ -75,7 +75,9 @@ router.post('/', function(req, res, next) {
     }
     else {
       res.send(200,'Parse data : OK...try send log');
-      parsed_json.negativefeedback = true;
+      if(parsed_json.negativefeedback == undefined) {
+        parsed_json.negativefeedback = true;
+      }
       if(fs.existsSync('./uploads/output/'+parsed_json.session_id+'.json')) {
         parsed_json.fileexist = true;
       } else {
