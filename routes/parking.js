@@ -135,12 +135,12 @@ router.get('/update', function(req, res, next) {
 
 router.get('/increase', function(req, res, next) {
   var query = {
-    "parking_id": req.query.parking_id,
-    "type": req.query.type
+    parking_id: req.query.parking_id,
+    type: req.query.type
   }
   var update = {
-    "$inc": {
-      "consumption" : 1
+    $inc: {
+      consumption : 1
     }
   }
   Parking.update(query, update, function(err, result) {

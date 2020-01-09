@@ -107,26 +107,25 @@ router.get('/increase', function(req, res, next) {
       res.send(500);
       return;
     }
-    var count = 0;
+    var object;
     result.hint_data_list.forEach(hint => {
       if(hint.interest == req.query.interest){
         hint.command_list.forEach(command => {
           if(command.command == req.query.command){
             if(command.consumption_count != undefined) {
-              count = command.consumption_count + 1;
+              command.consumption_count += 1;
             }
           }
         });
       }
     });
+    object = result;
+    console.log(object);
     Suggestion.update({
       session_id: req.query.session_id
     }, {
-        'hint_data_list.$[interest].command_list.$[command].consumption_count' : 'MW'
-    }, {arrayFilters : [
-      { interest : req.query.interest},
-      { command : req.query.command}
-    ], multi : true}, function(err, result) {
+        hint_data_list : object
+    }, function(err, result) {
       if(err){
         console.log(err);
         res.send(500);
