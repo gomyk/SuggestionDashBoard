@@ -57,20 +57,22 @@ router.post('/', function(req, res, next) {
     feedback: parsed_json.feedback,
     feedback_comment: parsed_json.feedback_comment,
     timestamp: Date.now(),
+    parking_time: parsed_json.parking_time,
+    comsumption: parsed_json.comsumption,
     device_id: parsed_json.device_id,
     log_version: parsed_json.log_version,
     bixby_client_version: parsed_json.bixby_client_version,
     bixby_service_version: parsed_json.bixby_service_version
   };
   var parking = new Parking(parking_json);
-  Parking.find({parking_id : parsed_json.parking_id}, function(err , docs) {
+  Parking.find({parking_id : parsed_json.parking_id, type: parsed_json.type}, function(err , docs) {
     if(err){
       console.log(err);
       res.send(500, err);
       return;
     }
     if(docs.length > 0) {
-      Parking.update({parking_id : parsed_json.parking_id}, parking_json ,{multi:true},function(err, object){
+      Parking.update({parking_id : parsed_json.parking_id, type: parsed_json.type}, parking_json ,{multi:true},function(err, object){
           console.log("Already have same parking Id");
           if(err) {
             return console.log(err);

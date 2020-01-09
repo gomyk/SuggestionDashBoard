@@ -41,6 +41,11 @@ router.post('/', function(req, res, next) {
     console.log('Parse data : Json parse error');
     res.send(500,'Parse data : Json parse error');
   } else{
+    if(parsed_json.parking_id != undefined) {
+      res.send(500, 'Wrong collection');
+      console.log('wrong collection');
+      return;
+    }
     if(parsed_json.bixby_client_version == undefined
       || parsed_json.bixby_client_version == null) {
       //json output
