@@ -100,4 +100,33 @@ router.get('/update', function(req, res, next) {
   }
 });
 
+router.get('/increase', function(req, res, next) {
+  var query = {
+    "session_id": req.query.session_id,
+    "hint_data_list": {
+      "$elemMatch": {
+        req.query.interest, "command_list.command":req.query.command
+      }
+    }
+  }
+  var update = {
+    "$inc": {
+      "hint_data_list.$[outer].command_list.$[inner].consumption_count" : 1
+    }
+  }
+  var filter = {"arrayFilters" : [
+    { "outer.interest" : req.query.interest},
+    { "inner.command" : req.query.command}
+  ]};
+  Suggestion.update(query, update, filter, function(err, result) {
+    if(err){
+      console.log("not_ok");
+      res.send(500);
+    } else {
+      console.log('ok');
+      res.send(200);
+    }
+  });
+});
+
 module.exports = router;

@@ -7,7 +7,7 @@ var userSchema  = {
   feedback_comment: 'String',
   timestamp: 'Number',
   parking_time: 'Number',
-  consumption: 'Boolean',
+  consumption: 'Number',
   device_id: 'String',
   log_version: 'Number',
   bixby_client_version: 'String',

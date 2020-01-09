@@ -119,6 +119,7 @@ router.get('/update', function(req, res, next) {
     res.send(500);
     return;
   }
+
   Parking.update(parsed_query, update,function(err,result) {
     console.log("update_with_query : ");
     console.log(update);
@@ -128,6 +129,27 @@ router.get('/update', function(req, res, next) {
     } else {
       console.log("OK_updated");
       res.send(200,'ok');
+    }
+  });
+});
+
+router.get('/increase', function(req, res, next) {
+  var query = {
+    "parking_id": req.query.parking_id,
+    "type": req.query.type
+  }
+  var update = {
+    "$inc": {
+      "consumption" : 1
+    }
+  }
+  Parking.update(query, update, function(err, result) {
+    if(err){
+      console.log("not_ok");
+      res.send(500);
+    } else {
+      console.log('ok');
+      res.send(200);
     }
   });
 });
