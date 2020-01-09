@@ -115,6 +115,10 @@ router.get('/update', function(req, res, next) {
     res.send(500, 'query parse error');
     return;
   }
+  if(update == null) {
+    res.send(500);
+    return;
+  }
   Parking.update(parsed_query, update,function(err,result) {
     console.log("update_with_query : ");
     console.log(update);
