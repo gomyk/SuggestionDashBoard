@@ -108,16 +108,19 @@ router.get('/increase', function(req, res, next) {
         "interest":req.query.interest, "command_list.command":req.query.command
       }
     }
-  }
+  };
+  console.log(query);
   var update = {
     "$inc": {
       "hint_data_list.$[outer].command_list.$[inner].consumption_count" : 1
     }
-  }
+  };
+  console.log(update);
   var filter = {"arrayFilters" : [
     { "outer.interest" : req.query.interest},
     { "inner.command" : req.query.command}
   ]};
+  console.log(filter);
   Suggestion.update(query, update, filter, function(err, result) {
     if(err){
       console.log("not_ok");
