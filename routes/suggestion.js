@@ -138,7 +138,7 @@ router.get('/increase', function(req, res, next) {
   });
 });
 router.get('/delete', function(req, res, next) {
-    Suggestion.delete({
+    Suggestion.remove({
       session_id: req.query.session_id
     }, function(err, result) {
       if(err){
