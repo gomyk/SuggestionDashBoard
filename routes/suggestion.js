@@ -60,6 +60,7 @@ router.get('/update', function(req, res, next) {
     update = JSON.parse(req.query.u);
   }
   if(update == null ){
+    console.log("update_time");
     Suggestion.find(parsed_query, selection, option, function(err , docs) {
       if(err){
         console.log(err);
@@ -85,7 +86,9 @@ router.get('/update', function(req, res, next) {
       });
     });
   } else {
-    Suggestion.update(q, u,function(err,result) {
+    Suggestion.update(parsed_query, update,function(err,result) {
+      console.log("update_with_query : ");
+      console.log(update);
       if(err){
         console.log("err");
       } else {
