@@ -102,12 +102,7 @@ router.get('/update', function(req, res, next) {
 
 router.get('/increase', function(req, res, next) {
   Suggestion.update({
-    session_id: req.query.session_id,
-    hint_data_list: {
-      $elemMatch: {
-        interest:req.query.interest, "command_list.command":req.query.command
-      }
-    }
+    session_id: req.query.session_id
   }, {
     $inc: {
       "hint_data_list.$[outer].command_list.$[inner].consumption_count" : 1
