@@ -105,7 +105,7 @@ router.get('/increase', function(req, res, next) {
     "session_id": req.query.session_id,
     "hint_data_list": {
       "$elemMatch": {
-        req.query.interest, "command_list.command":req.query.command
+        "interest":req.query.interest, "command_list.command":req.query.command
       }
     }
   }
