@@ -101,23 +101,42 @@ router.get('/update', function(req, res, next) {
 });
 
 router.get('/increase', function(req, res, next) {
-  Suggestion.update({
-    session_id: req.query.session_id
-  }, {
-    $inc: {
-      "hint_data_list.$[outer].command_list.$[inner].consumption_count" : 1
-    }
-  }, {arrayFilters : [
-    { "outer.interest" : req.query.interest},
-    { "inner.command" : req.query.command}
-  ]}, function(err, result) {
+  Suggestion.findOne({session_id:req.query.session_id},function(err, result){
     if(err){
       console.log(err);
       res.send(500);
-    } else {
-      console.log('ok');
-      res.send(200);
+      return;
     }
+    var count = 0;
+    result.hint_data_list.forEach(hint => {
+      if(hint.interest == req.query.interest){
+        hint.command_list.forEach(command => {
+          if(command.command == req.query.command){
+            if(command.consumption_count != undefined) {
+              count = command.consumption_count + 1;
+            }
+          }
+        });
+      }
+    });
+    Suggestion.update({
+      session_id: req.query.session_id
+    }, {
+      $set: {
+        "hint_data_list.$[outer].command_list.$[inner].consumption_count" : count
+      }
+    }, {arrayFilters : [
+      { "outer.interest" : req.query.interest},
+      { "inner.command" : req.query.command}
+    ]}, function(err, result) {
+      if(err){
+        console.log(err);
+        res.send(500);
+      } else {
+        console.log('ok');
+        res.send(200);
+      }
+    });
   });
 });
 
