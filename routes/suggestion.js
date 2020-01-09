@@ -122,9 +122,7 @@ router.get('/increase', function(req, res, next) {
     Suggestion.update({
       session_id: req.query.session_id
     }, {
-      $set: {
-        hint_data_list.$[interest].command_list.$[command].consumption_count : count
-      }
+        'hint_data_list.$[interest].command_list.$[command].consumption_count' : 'MW'
     }, {arrayFilters : [
       { interest : req.query.interest},
       { command : req.query.command}
