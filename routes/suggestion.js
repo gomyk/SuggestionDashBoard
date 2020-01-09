@@ -102,21 +102,21 @@ router.get('/update', function(req, res, next) {
 
 router.get('/increase', function(req, res, next) {
   var query = {
-    "session_id": req.query.session_id,
-    "hint_data_list": {
-      "$elemMatch": {
-        "interest":req.query.interest, "command_list.command":req.query.command
+    session_id: req.query.session_id,
+    hint_data_list: {
+      $elemMatch: {
+        interest:req.query.interest, "command_list.command":req.query.command
       }
     }
   };
   console.log(query);
   var update = {
-    "$inc": {
+    $inc: {
       "hint_data_list.$[outer].command_list.$[inner].consumption_count" : 1
     }
   };
   console.log(update);
-  var filter = {"arrayFilters" : [
+  var filter = {arrayFilters : [
     { "outer.interest" : req.query.interest},
     { "inner.command" : req.query.command}
   ]};
