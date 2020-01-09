@@ -55,30 +55,44 @@ router.get('/update', function(req, res, next) {
     res.send(500, 'query parse error');
     return;
   }
-  Suggestion.find(parsed_query, selection, option, function(err , docs) {
-    if(err){
-      console.log(err);
-      res.send(500, err);
-      return;
-    }
-    console.log('OK');
-    docs.forEach(doc => {
-      var time = doc.session_id.split('_')[0].split(' ');
-      var YMD = time[0].split('-');
-      var HMS = time[1].split(':');
-      var milli = HMS[2].split('.');
+  var update = null;
+  if(req.query.u != undefined) {
+    update = req.query.u;
+  }
+  if(update == null ){
+    Suggestion.find(parsed_query, selection, option, function(err , docs) {
+      if(err){
+        console.log(err);
+        res.send(500, err);
+        return;
+      }
+      console.log('OK');
+      docs.forEach(doc => {
+        var time = doc.session_id.split('_')[0].split(' ');
+        var YMD = time[0].split('-');
+        var HMS = time[1].split(':');
+        var milli = HMS[2].split('.');
 
-      var date = new Date(YMD[0], YMD[1] - 1, YMD[2], HMS[0], HMS[1], milli[0]);
+        var date = new Date(YMD[0], YMD[1] - 1, YMD[2], HMS[0], HMS[1], milli[0]);
 
-      Suggestion.update({_id:doc._id},{timestamp:date.getTime()+milli[1]},function(err,result) {
-        if(err){
-          console.log("err");
-        } else {
-          console.log("OK_updated");
-        }
+        Suggestion.update({_id:doc._id},{timestamp:date.getTime()+milli[1]},function(err,result) {
+          if(err){
+            console.log("err");
+          } else {
+            console.log("OK_updated");
+          }
+        });
       });
     });
-  });
+  } else {
+    Suggestion.update(q, u,function(err,result) {
+      if(err){
+        console.log("err");
+      } else {
+        console.log("OK_updated");
+      }
+    });
+  }
 });
 
 module.exports = router;
