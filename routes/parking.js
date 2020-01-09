@@ -138,19 +138,22 @@ router.get('/increase', function(req, res, next) {
     parking_id: req.query.parking_id,
     type: req.query.type
   }
-  var update = {
-    $inc: {
-      consumption : 1
-    }
-  }
-  Parking.update(query, update, function(err, result) {
-    if(err){
-      console.log("not_ok");
+  Parking.findOne(query,function(err, result) {
+    if(err) {
+      console.log(err);
       res.send(500);
-    } else {
-      console.log('ok');
-      res.send(200);
+      return;
     }
+
+    Parking.update(query, {consumption: result.consumption + 1}, function(err, result) {
+      if(err){
+        console.log("not_ok");
+        res.send(500);
+      } else {
+        console.log('ok');
+        res.send(200);
+      }
+    });
   });
 });
 

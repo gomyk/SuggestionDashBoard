@@ -114,6 +114,8 @@ router.get('/increase', function(req, res, next) {
           if(command.command == req.query.command){
             if(command.consumption_count != undefined) {
               command.consumption_count += 1;
+            } else {
+              command.consumption_count = 0;
             }
           }
         });
