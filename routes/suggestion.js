@@ -121,12 +121,11 @@ router.get('/increase', function(req, res, next) {
         });
       }
     });
-    object = result;
     console.log(object);
     Suggestion.update({
       session_id: req.query.session_id
     }, {
-        hint_data_list : object
+        hint_data_list : result.hint_data_list
     }, function(err, result) {
       if(err){
         console.log(err);
@@ -137,6 +136,19 @@ router.get('/increase', function(req, res, next) {
       }
     });
   });
+});
+router.get('/delete', function(req, res, next) {
+    Suggestion.delete({
+      session_id: req.query.session_id
+    }, function(err, result) {
+      if(err){
+        console.log(err);
+        res.send(500);
+      } else {
+        console.log('ok');
+        res.send(200);
+      }
+    });
 });
 
 module.exports = router;
