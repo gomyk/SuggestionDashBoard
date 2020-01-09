@@ -76,7 +76,7 @@ router.get('/update', function(req, res, next) {
 
         var date = new Date(YMD[0], YMD[1] - 1, YMD[2], HMS[0], HMS[1], milli[0]);
 
-        Suggestion.update({_id:doc._id},{timestamp:date.getTime()+milli[1]},function(err,result) {
+        Suggestion.update({_id:doc._id},{timestamp:date.getTime()/1000+milli[1]},function(err,result) {
           if(err){
             console.log("err");
           } else {
