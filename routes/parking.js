@@ -58,7 +58,7 @@ router.post('/', function(req, res, next) {
     feedback_comment: parsed_json.feedback_comment,
     timestamp: Date.now(),
     parking_time: parsed_json.parking_time,
-    comsumption: parsed_json.comsumption,
+    consumption: parsed_json.consumption,
     device_id: parsed_json.device_id,
     log_version: parsed_json.log_version,
     bixby_client_version: parsed_json.bixby_client_version,
