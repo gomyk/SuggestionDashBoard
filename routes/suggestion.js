@@ -57,7 +57,7 @@ router.get('/update', function(req, res, next) {
   }
   var update = null;
   if(req.query.u != undefined) {
-    update = req.query.u;
+    update = JSON.parse(req.query.u);
   }
   if(update == null ){
     Suggestion.find(parsed_query, selection, option, function(err , docs) {
