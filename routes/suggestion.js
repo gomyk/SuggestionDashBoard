@@ -112,7 +112,7 @@ router.get('/increase', function(req, res, next) {
     { "inner.command" : req.query.command}
   ]}, function(err, result) {
     if(err){
-      console.log("not_ok");
+      console.log(err);
       res.send(500);
     } else {
       console.log('ok');
