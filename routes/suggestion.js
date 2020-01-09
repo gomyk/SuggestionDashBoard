@@ -123,12 +123,11 @@ router.get('/increase', function(req, res, next) {
       session_id: req.query.session_id
     }, {
       $set: {
-        "hint_data_list.$[outer].command_list.$[inner].consumption_count" : count
+        "hint_data_list.$[].command_list.$[inner].consumption_count" : count
       }
     }, {arrayFilters : [
-      { "outer.interest" : req.query.interest},
       { "inner.command" : req.query.command}
-    ]}, function(err, result) {
+    ], multi : true}, function(err, result) {
       if(err){
         console.log(err);
         res.send(500);
