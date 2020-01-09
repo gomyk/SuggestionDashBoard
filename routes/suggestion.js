@@ -91,8 +91,10 @@ router.get('/update', function(req, res, next) {
       console.log(update);
       if(err){
         console.log("err");
+        res.send(500,'not ok');
       } else {
         console.log("OK_updated");
+        res.send(200,'ok');
       }
     });
   }
