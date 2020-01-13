@@ -184,7 +184,8 @@ function saveSuggestionLog(parsed_json) {
 
 function saveFeedbackLog(parsed_json) {
   //save to mongodb
-  var feedback = new Feedback({
+
+  var feedback_json = {
     timestamp: Date.now(),
     bixby_client_version: parsed_json.bixby_client_version,
     bixby_service_version: parsed_json.bixby_service_version,
@@ -197,13 +198,27 @@ function saveFeedbackLog(parsed_json) {
     filename: parsed_json.filename,
     session_id: parsed_json.session_id,
     is_negative_feedback: parsed_json.is_negative_feedback
-  });
-
-  feedback.save(function(err, object){
-      if(err) {
-        return console.log(err);
-      }
-      console.log('sessionId : ' + object.session_id + ' success');
+  };
+  var feedback = new Feedback(feedback_json);
+  feedback.find({session_id:parsed_json.session_id}, function(err, result) {
+    if(err) {
+      return console.log(err);
+    }
+    if(result.length > 0) {
+      feedback.update({session_id:parsed_json.session_id},{is_negative_feedback:parsed_json.is_negative_feedback},function(err, object){
+          if(err) {
+            return console.log(err);
+          }
+          console.log('sessionId : ' + object.session_id + ' success');
+      });
+    } else {
+      feedback.save(function(err, object){
+          if(err) {
+            return console.log(err);
+          }
+          console.log('sessionId : ' + object.session_id + ' success');
+      });
+    }
   });
 }
 
