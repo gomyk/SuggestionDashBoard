@@ -185,7 +185,7 @@ function saveSuggestionLog(parsed_json) {
 function saveFeedbackLog(parsed_json) {
   //save to mongodb
 
-  var feedback_json = {
+  var feedback = new Feedback({
     timestamp: Date.now(),
     bixby_client_version: parsed_json.bixby_client_version,
     bixby_service_version: parsed_json.bixby_service_version,
@@ -198,14 +198,14 @@ function saveFeedbackLog(parsed_json) {
     filename: parsed_json.filename,
     session_id: parsed_json.session_id,
     is_negative_feedback: parsed_json.is_negative_feedback
-  };
-  var feedback = new Feedback(feedback_json);
-  feedback.find({session_id:parsed_json.session_id}, function(err, result) {
+  });
+  Feedback.find({session_id:parsed_json.session_id}, function(err, result) {
     if(err) {
       return console.log(err);
     }
     if(result.length > 0) {
-      feedback.update({session_id:parsed_json.session_id},{is_negative_feedback:parsed_json.is_negative_feedback},function(err, object){
+      Feedback.update({session_id:parsed_json.session_id},
+        {is_negative_feedback:parsed_json.is_negative_feedback},function(err, object){
           if(err) {
             return console.log(err);
           }
