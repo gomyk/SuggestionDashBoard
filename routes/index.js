@@ -199,13 +199,13 @@ function saveFeedbackLog(parsed_json) {
     session_id: parsed_json.session_id,
     is_negative_feedback: parsed_json.is_negative_feedback
   });
-  Feedback.find({session_id:parsed_json.session_id, interest: parsed_json.interest}, function(err, result) {
+  Feedback.find({session_id:parsed_json.session_id, interest: parsed_json.feedback.interest}, function(err, result) {
     if(err) {
       return console.log(err);
     }
     console.log(result.length);
     if(result.length > 0) {
-      Feedback.update({session_id:parsed_json.session_id, interest: parsed_json.interest},
+      Feedback.update({session_id:parsed_json.session_id, interest: parsed_json.feedback.interest},
         {is_negative_feedback:parsed_json.is_negative_feedback},function(err, object){
           if(err) {
             return console.log(err);
