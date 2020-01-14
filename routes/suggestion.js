@@ -108,6 +108,11 @@ router.get('/increase', function(req, res, next) {
       return;
     }
     var object;
+    if(result == null) {
+      console.log('result == null');
+      res.send(500);
+      return;
+    }
     result.hint_data_list.forEach(hint => {
       if(hint.interest == req.query.interest){
         hint.command_list.forEach(command => {
