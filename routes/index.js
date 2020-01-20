@@ -59,7 +59,7 @@ router.post('/', function(req, res, next) {
       if(parsed_json.output.length == 0) {
         console.log('Save data : parsed_json is empty');
       } else {
-        //sendToLogServer(parsed_json, 'keyword');
+        sendToLogServer(parsed_json, 'keyword');
       }
     }
     else if(parsed_json.bixby_client_version <= '2.2.46.85') {
@@ -76,7 +76,7 @@ router.post('/', function(req, res, next) {
         parsed_json.hint_data_count = 0;
       }
       saveSuggestionLog(parsed_json);
-      //sendToLogServer(parsed_json, 'suggestion');
+      sendToLogServer(parsed_json, 'suggestion');
     }
     else {
       res.send(200,'Parse data : OK...try send log');
@@ -89,8 +89,8 @@ router.post('/', function(req, res, next) {
         parsed_json.fileexist = false;
       }
       saveFeedbackLog(parsed_json);
-      //updateFeedbackToDB(parsed_json.session_id);
-      //sendToLogServer(parsed_json, 'feedback');
+      updateFeedbackToDB(parsed_json.session_id);
+      sendToLogServer(parsed_json, 'feedback');
     }
   }
 });
@@ -199,13 +199,13 @@ function saveFeedbackLog(parsed_json) {
     session_id: parsed_json.session_id,
     is_negative_feedback: parsed_json.is_negative_feedback
   });
-  Feedback.find({session_id:parsed_json.session_id, interest: parsed_json.feedback.interest}, function(err, result) {
+  Feedback.find({session_id:parsed_json.session_id, interest: parsed_json.interest}, function(err, result) {
     if(err) {
       return console.log(err);
     }
-    console.log(result.length);
+    console.log
     if(result.length > 0) {
-      Feedback.update({session_id:parsed_json.session_id, interest: parsed_json.feedback.interest},
+      Feedback.update({session_id:parsed_json.session_id, interest: parsed_json.interest},
         {is_negative_feedback:parsed_json.is_negative_feedback},function(err, object){
           if(err) {
             return console.log(err);
@@ -284,7 +284,7 @@ function updateFileExistToDB(session) {
        console.log(update_result);
      });
 
-     Feedback.update({session_id: session}, {fileexist: true}, function(err,update_result) {
+     Feedback.update({session_id: session}, {fileexist: true}, {multi:true}, function(err,update_result) {
        if(err) {
          console.log(err);
          return;
